@@ -1,6 +1,12 @@
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O 
 
+
+#kaggle kernel link:: https://www.kaggle.com/pradyu99914/nyc-taxi-fare-models
+#please refer to the commit #14.
+#result: this 1NN model gives an RMSE rate of about 3.5!
+
+#kaggle code
 import os
 for dirname, _, filenames in os.walk('/kaggle/input'):
     for filename in filenames:
@@ -27,7 +33,7 @@ train_df.head()
 
 #select all rows, and all columns after the second column
 X_test = test_df.iloc[:,2:]
-#reorder the columns
+#reorder the columns of the tst set
 Xt = train_df.iloc[:5,3:]
 X_test = X_test[Xt.columns]
 Xt.head()
