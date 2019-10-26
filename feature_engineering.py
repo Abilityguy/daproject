@@ -6,6 +6,7 @@
 #this is the kernel we have used to perform feature engineering.
 #not all of the visualizations that are required for feature engineering are here. Please refer to the file named "visualization.py"
 
+#also, gc.collect() is not a hack to increase the number of lines of code.. it is for efficient memory management
 
 #some imports and kaggle default code
 #!pip install modin[ray] #parallelized pandas..
@@ -150,7 +151,6 @@ train_df.to_feather('nyc_taxi_data_raw.feather')
 df_chunk = pd.read_csv('/kaggle/input/new-york-city-taxi-fare-prediction/test.csv')
 df_chunk['pickup_datetime'] = df_chunk['pickup_datetime'].str.slice(0, 16)
 df_chunk['pickup_datetime'] = pd.to_datetime(df_chunk['pickup_datetime'], utc=True, format='%Y-%m-%d %H:%M')
-
 gc.collect()
 df_chunk["time"] = pd.to_numeric(df_chunk.apply(lambda r: r.pickup_datetime.hour*60 + r.pickup_datetime.minute, axis = 1), downcast = "unsigned")
 gc.collect()
@@ -158,7 +158,6 @@ gc.collect()
 us_holidays = holidays.US()
 df_chunk["holiday"] = pd.to_numeric(df_chunk.apply(lambda x: 1 if x.pickup_datetime.strftime('%d-%m-%y')in us_holidays else 0, axis =1), downcast = "unsigned")
 gc.collect()
-
 Manhattan = (-73.9712,40.7831)[::-1]
 JFK_airport = (-73.7781,40.6413)[::-1]
 Laguardia_airport = (-73.8740,40.7769)[::-1]
@@ -171,7 +170,6 @@ df_chunk['dropoff_distance_jfk'] = pd.to_numeric(haversine_distance(JFK_airport[
 df_chunk['pickup_distance_jfk'] = pd.to_numeric(haversine_distance(JFK_airport[0],JFK_airport[1],df_chunk['pickup_latitude'],df_chunk['pickup_longitude']), downcast = 'float')
 df_chunk['pickup_distance_lg'] = pd.to_numeric(haversine_distance(Laguardia_airport[0],Laguardia_airport[1],df_chunk['dropoff_latitude'],df_chunk['dropoff_longitude']), downcast = 'float')
 df_chunk['dropoff_distance_lg'] = pd.to_numeric(haversine_distance(Laguardia_airport[0],Laguardia_airport[1],df_chunk['pickup_latitude'],df_chunk['pickup_longitude']), downcast = 'float')
-
 #check if any column got dropped(kaggle needs original number of test datapoints for evaluation)
 print("before", len(df_chunk))
 print("after", len(df_chunk))
