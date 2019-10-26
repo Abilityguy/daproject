@@ -24,6 +24,6 @@ We are still working on improving the performance of models through feature engi
 and parameter tuning.
 
 Kaggle Submissions(RMSE error rate on the test set):<br>
-<a href = "https://drive.google.com/file/d/1rCKistEc5ZaHs_u37-iaeijOEhFMOZXn/view?usp=sharing">Link - 1</a>
-<a href = "https://drive.google.com/file/d/1wVkRsGI2xxNImMdKhh1SMJp1J7MXdRRs/view?usp=sharing">Link - 2</a>
+<a href = "https://drive.google.com/file/d/1rCKistEc5ZaHs_u37-iaeijOEhFMOZXn/view?usp=sharing">Link - 1(Xgboost)</a><br>
+<a href = "https://drive.google.com/file/d/1wVkRsGI2xxNImMdKhh1SMJp1J7MXdRRs/view?usp=sharing">Link - 2(kNN, regression, random forest)(description for each submission provided)</a>
 
