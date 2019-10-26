@@ -6,8 +6,6 @@
 #this is the kernel we have used to perform feature engineering.
 #not all of the visualizations that are required for feature engineering are here. Please refer to the file named "visualization.py"
 
-#also, please note that gc.collect() is not a hack to increase the number of lines of code.. it is for efficient memory management
-
 #some imports and kaggle default code
 #!pip install modin[ray] #parallelized pandas..
 import numpy as np # linear algebra
