@@ -1,4 +1,4 @@
-# daproject repository for teamAPP
+# DA project repository for teamAPP
 
 Links to various kernels:
 Data feature engineering:<br>
