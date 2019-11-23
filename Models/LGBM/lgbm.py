@@ -1,11 +1,16 @@
-#Xgboost classifier
+#package imports
+!pip install holidays
 
 #package imports
 import pandas as pd
 from sklearn import preprocessing
-import xgboost as xgb
+import lightgbm as lgb
 from sklearn.metrics import mean_squared_error
 from bayes_opt import BayesianOptimization
+from sklearn import metrics
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import KFold
+import seaborn as sns
 from sklearn.model_selection import train_test_split
 import gc
 import os
@@ -18,15 +23,28 @@ import matplotlib.pyplot as plt
 
 #read the test and train sets
 gc.collect()
-df_chunk = pd.read_csv('../input/new-york-city-taxi-fare-prediction/train.csv', nrows = 2_000_000) #2 Million rows is the maximum that can be handled by Kaggle
-test_df = pd.read_feather('../input/kernel318ff03a29/test_feature.feather')
+df_chunk = pd.read_csv('../input/new-york-city-taxi-fare-prediction/train.csv', nrows = 15_000_000) #15 Million rows is the maximum that can be handled by Kaggle
+test_df = pd.read_feather('../input/data-feature-engineering/test_feature.feather')
 gc.collect()
 
 #examine the dataset's fist 5 rows
 df_chunk.head()
 
+#Check length before data cleaning
+len(df_chunk)
+
+#Dropping Missing values
+#Basic Data cleaning as drawn from visualizations
+df_chunk = df_chunk.dropna()
+df_chunk = df_chunk[(df_chunk['fare_amount'] > 0) & (df_chunk['fare_amount'] <= 250) & 
+          (df_chunk['passenger_count'] >= 0) & (df_chunk['passenger_count'] <= 8)  & 
+          ((df_chunk['pickup_longitude'] != 0) & (df_chunk['pickup_latitude'] != 0) & (df_chunk['dropoff_longitude'] != 0) & (df_chunk['dropoff_latitude'] != 0))]
+
+#Check length after data cleaning
+len(df_chunk)
+
 #examine the dataset's fist 5 rows
-df_chunk.head()
+test_df.head()
 
 #Feature Engineering
 df_chunk['pickup_datetime'] = df_chunk['pickup_datetime'].str.slice(0, 16)
@@ -46,7 +64,7 @@ def haversine_distance(lat1, long1, lat2, long2):
     d = (R * c) #in kilometers
     return d
 
-#Time of the day in minutes as a feature
+#Time of the day in minutes
 df_chunk["time"] = pd.to_numeric(df_chunk.apply(lambda r: r.pickup_datetime.hour*60 + r.pickup_datetime.minute, axis = 1), downcast = "unsigned")
 gc.collect()
 
@@ -64,7 +82,7 @@ time_square = (-73.9855,40.7580)[::-1]
 brooklyn_bridge = (-73.9969,40.7061)[::-1]
 rockerfeller = (-73.9787,40.7587)[::-1]
 
-#Distance from pickup to dropoff
+#Distance between pickup and dropoff
 df_chunk["distance"] = pd.to_numeric(haversine_distance(df_chunk['pickup_latitude'], df_chunk['pickup_longitude'], df_chunk['dropoff_latitude'], df_chunk['dropoff_longitude']), downcast = 'float')
 
 #Year as a feature
@@ -125,55 +143,92 @@ test_df['pickup_latitude'] = np.radians(test_df['pickup_latitude'])
 test_df['dropoff_latitude'] = np.radians(test_df['dropoff_latitude'])
 test_df['dropoff_longitude'] = np.radians(test_df['dropoff_longitude'])
 
-#Get X and y
-df_chunk = df_chunk.drop(['pickup_datetime'],axis = 1)
-df_chunk = df_chunk.drop(['key'],axis = 1)
-X_train, X_test, y_train, y_test = train_test_split(df_chunk.drop('fare_amount', axis=1),
-                                                    df_chunk['fare_amount'], test_size=0.1)
+df_chunk.head()
+test_df.head()
 
-#Converting the X and y into a DMatrix which is optimized for XGBoost training
-dtrain = xgb.DMatrix(X_train, label=y_train)
-dtest = xgb.DMatrix(X_test)
+#Getting X and y from train set
+y = df_chunk['fare_amount']
+df_chunk = df_chunk.drop(['key','pickup_datetime','fare_amount'],axis = 1)
+X_train,X_val,y_train,y_val = train_test_split(df_chunk,y,test_size = 0.1)
 del(df_chunk)
-del(X_train)
-del(X_test)
+del(y)
 gc.collect()
 
-#Bayesian Optimization to get the best parameters
-def xgb_evaluate(max_depth, gamma, colsample_bytree):
-    params = {'eval_metric': 'rmse',
-              'max_depth': int(max_depth),
-              'subsample': 0.8,
-              'eta': 0.1,
-              'gamma': gamma,
-              'colsample_bytree': colsample_bytree}
-    cv_result = xgb.cv(params, dtrain, num_boost_round=100, nfold=3)    
-    return -1.0 * cv_result['test-rmse-mean'].iloc[-1]
-    
-xgb_bo = BayesianOptimization(xgb_evaluate, {'max_depth': (7, 12), 
-                                             'gamma': (0, 1),
-                                             'colsample_bytree': (0.5, 0.9)})
-xgb_bo.maximize(init_points=5, n_iter=10, acq='ei')
-sorted_res = sorted(xgb_bo.res,key = lambda x: x['target'])
-params = sorted_res[-1]
-params['params']['max_depth'] = int(params['params']['max_depth']) 
+#Converting the X and y into an LGB dataset which is optimized for LGBM training
+dtrain = lgb.Dataset(X_train,y_train,silent=False,categorical_feature=['year','month','day','weekday'])
+dval = lgb.Dataset(X_val,y_val,silent=False,categorical_feature=['year','month','day','weekday'])
 
-model = xgb.train(params, dtrain, num_boost_round=1000)
+#Setting basic parameters for training
+lgbm_params =  {
+    'task': 'train',
+    'boosting_type': 'gbdt',
+    'objective': 'regression',
+    'metric': 'rmse',
+    'nthread': 4,
+    'learning_rate': 0.05,
+    'bagging_fraction': 1,
+    'num_rounds':50000
+    }
 
-#Feature Importance
-fscores = pd.DataFrame({'X': list(model.get_fscore().keys()), 'Y': list(model.get_fscore().values())})
-fscores.sort_values(by='Y').plot.bar(x='X')
+model = lgb.train(lgbm_params, train_set = dtrain, num_boost_round=10000,early_stopping_rounds=500,verbose_eval=500, valid_sets=dval)
 
-test_df.head()
-X_test = test_df.iloc[:,2:]
-X_test = xgb.DMatrix(X_test)
-pred = model.predict(X_test)
+#Deleting to save memory
+del(X_train)
+del(y_train)
+del(X_val)
+del(y_val)
+gc.collect()
+
+#reference - https://stackoverflow.com/questions/55208734/save-lgbmregressor-model-from-python-lightgbm-package-to-disc
+#Save the trained model
+model.save_model("model.txt")
+
+#Previous training method used
+"""
+trainshape = X_train.shape
+testshape = X_val.shape
+
+print("Light Gradient Boosting Regressor: ")
+
+
+folds = KFold(n_splits=5, shuffle=True)
+fold_preds = np.zeros(testshape[0])
+oof_preds = np.zeros(trainshape[0])
+dtrain.construct()
+
+# Fit 5 Folds
+for trn_idx, val_idx in folds.split(X_train):
+    clf = lgb.train(
+        params=lgbm_params,
+        train_set=dtrain.subset(trn_idx),
+        valid_sets=dtrain.subset(val_idx),
+        num_boost_round=20000, 
+        early_stopping_rounds=1000,
+        verbose_eval=500
+    )
+    oof_preds[val_idx] = clf.predict(dtrain.data.iloc[val_idx])
+    fold_preds += clf.predict(X_val) / folds.n_splits
+    print(mean_squared_error(y_train.iloc[val_idx], oof_preds[val_idx]) ** .5)
+"""
+
+#Predicting on the test set
+test_key = test_df['key']
+test_df = test_df.drop(['key','pickup_datetime'],axis = 1)
+pred = model.predict(test_df)
+
 
 #create a dataframe in the submission format
-holdout = pd.DataFrame({'key': test_df.key, 'fare_amount': pred})
+holdout = pd.DataFrame({'key': test_key, 'fare_amount': pred})
 #write the submission file to output
 holdout.to_csv('submission.csv', index=False)
 
 holdout.head()
-    
-len(holdout)
+
+#Feature Importance Graph
+feature_imp = pd.DataFrame({'Value':model.feature_importance(),'Feature':test_df.columns})
+plt.figure(figsize=(20, 10))
+sns.barplot(x="Value", y="Feature", data=feature_imp.sort_values(by="Value", ascending=False))
+plt.title('LightGBM Features (avg over folds)')
+plt.tight_layout()
+plt.show()
+
