@@ -108,4 +108,56 @@ All kaggle submissions made till date:
     <td class="tg-yw4l">Trained on 15 Million data points</td>
     <td class="tg-yw4l">2.93553</td>  
   </tr>
+  <tr>
+    <td class="tg-yw4l">Linear Regression</td>
+    <td class="tg-yw4l">Baseline Model</td>
+    <td class="tg-yw4l">5.39</td>  
+  </tr>
+  <tr>
+    <td class="tg-yw4l">Linear Regression</td>
+    <td class="tg-yw4l">Final model trained on engineered data</td>
+    <td class="tg-yw4l">5.18</td>  
+  </tr>
+  <tr>
+    <td class="tg-yw4l">Ridge regression</td>
+    <td class="tg-yw4l">Ridge regression without grid search /td>
+    <td class="tg-yw4l">5.18</td>  
+  </tr>
+  
+  <tr>
+    <td class="tg-yw4l">Ridge ression</td>
+    <td class="tg-yw4l">Ridge regression with grid search</td>
+    <td class="tg-yw4l">5.18</td>  
+  </tr>
+ 
+  <tr>
+    <td class="tg-yw4l">Lasso regression</td>
+    <td class="tg-yw4l">Lasso regression</td>
+    <td class="tg-yw4l">9.409</td>  
+  </tr>
+  <tr>
+    <td class="tg-yw4l">Lasso regression</td>
+    <td class="tg-yw4l">Lasso regression with grid search</td>
+    <td class="tg-yw4l">5.05</td>  
+  </tr>
+  <tr>
+    <td class="tg-yw4l">Random forest regressor</td>
+    <td class="tg-yw4l">Random forest regressor</td>
+    <td class="tg-yw4l">4.43</td>  
+  </tr>
+  <tr>
+    <td class="tg-yw4l">Linear Regression</td>
+    <td class="tg-yw4l">Final model trained on engineered data</td>
+    <td class="tg-yw4l">5.18</td>  
+  </tr>
+  <tr>
+    <td class="tg-yw4l">kNN regressor with bagging</td>
+    <td class="tg-yw4l">using feature engineered data</td>
+    <td class="tg-yw4l">3.54</td>  
+  </tr>
+  <tr>
+    <td class="tg-yw4l">Artificial neural network</td>
+    <td class="tg-yw4l">ANN with normalization of the data</td>
+    <td class="tg-yw4l">5.18</td>  
+  </tr>
 </table>
