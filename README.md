@@ -152,6 +152,6 @@ All kaggle submissions made till date:
   <tr>
     <td class="tg-yw4l">Artificial neural network</td>
     <td class="tg-yw4l">ANN with normalization of the data</td>
-    <td class="tg-yw4l">5.18</td>  
+    <td class="tg-yw4l">3.39</td>  
   </tr>
 </table>
