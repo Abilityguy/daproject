@@ -119,12 +119,6 @@ All kaggle submissions made till date:
     <td class="tg-yw4l">5.18</td>  
   </tr>
   <tr>
-    <td class="tg-yw4l">Ridge regression</td>
-    <td class="tg-yw4l">Ridge regression without grid search /td>
-    <td class="tg-yw4l">5.18</td>  
-  </tr>
-  
-  <tr>
     <td class="tg-yw4l">Ridge ression</td>
     <td class="tg-yw4l">Ridge regression with grid search</td>
     <td class="tg-yw4l">5.18</td>  
