@@ -19,6 +19,24 @@ https://www.kaggle.com/anushkini/taxi-xgboost
 kNN regression with vizualisation for best k value:
 https://www.kaggle.com/pradyu99914/nyc-taxi-fare-models
 
+LGBM:
+https://www.kaggle.com/anushkini/taxi-lightgbm
+
+A brief description of the files and folders:<br>
+-- TeamAPP_FinalReport.pdf - The final report of our project.<br>
+-- demo.py - A demo script which shows our recommender system in action.<br>
+--feature_engineering.py - A script which describes the feature engineering performed on the data.<br>
+--final_pipeline.py - The final pipeline code for our project.<br>
+--model.txt - The final LGBM model with an RMSE of 2.93.<br>
+--test_df.feather - A feather file which contains the test dataset in compressed form.<br>
+--visualization.py - A python script of all the visualizations performed on the dataset.<br>
+--Models:<br>
+----kNN Model/knn.py - Script to train the K Nearest Neighbours Model.<br>
+----ANN/ann.py - Script to train the Neural Network Model.<br>
+----LGBM/lgbm.py - Script to train the LGBM Model.<br>
+----XGBoost/XGBoost.py - Script to train the XGBoost Model.<br>
+
+
 Results:<br>
 We have been able to obtain an RMSE rate of about 2.93 on the kaggle competition.<br>
 
@@ -107,51 +125,5 @@ All kaggle submissions made till date:
     <td class="tg-yw4l">LGBM</td>
     <td class="tg-yw4l">Trained on 15 Million data points</td>
     <td class="tg-yw4l">2.93553</td>  
-  </tr>
-  <tr>
-    <td class="tg-yw4l">Linear Regression</td>
-    <td class="tg-yw4l">Baseline Model</td>
-    <td class="tg-yw4l">5.39</td>  
-  </tr>
-  <tr>
-    <td class="tg-yw4l">Linear Regression</td>
-    <td class="tg-yw4l">Final model trained on engineered data</td>
-    <td class="tg-yw4l">5.18</td>  
-  </tr>
-  <tr>
-    <td class="tg-yw4l">Ridge ression</td>
-    <td class="tg-yw4l">Ridge regression with grid search</td>
-    <td class="tg-yw4l">5.18</td>  
-  </tr>
- 
-  <tr>
-    <td class="tg-yw4l">Lasso regression</td>
-    <td class="tg-yw4l">Lasso regression</td>
-    <td class="tg-yw4l">9.409</td>  
-  </tr>
-  <tr>
-    <td class="tg-yw4l">Lasso regression</td>
-    <td class="tg-yw4l">Lasso regression with grid search</td>
-    <td class="tg-yw4l">5.05</td>  
-  </tr>
-  <tr>
-    <td class="tg-yw4l">Random forest regressor</td>
-    <td class="tg-yw4l">Random forest regressor</td>
-    <td class="tg-yw4l">4.43</td>  
-  </tr>
-  <tr>
-    <td class="tg-yw4l">Linear Regression</td>
-    <td class="tg-yw4l">Final model trained on engineered data</td>
-    <td class="tg-yw4l">5.18</td>  
-  </tr>
-  <tr>
-    <td class="tg-yw4l">kNN regressor with bagging</td>
-    <td class="tg-yw4l">using feature engineered data</td>
-    <td class="tg-yw4l">3.54</td>  
-  </tr>
-  <tr>
-    <td class="tg-yw4l">Artificial neural network</td>
-    <td class="tg-yw4l">ANN with normalization of the data</td>
-    <td class="tg-yw4l">3.39</td>  
   </tr>
 </table>
