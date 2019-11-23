@@ -9,6 +9,7 @@ Please note that the code has been executed over a number of commits.(as it take
 Linear, Ridge, Lasso regression, and Random forest model with 100 estimators:
 https://www.kaggle.com/anushkini/nyc-taxi-fare-models 
 
+
 Data Visualizations (visualizations that gave insights into feature engineering new columns):
 https://www.kaggle.com/anushkini/nyc-taxi-fare-graphs
 
@@ -19,9 +20,7 @@ kNN regression with vizualisation for best k value:
 https://www.kaggle.com/pradyu99914/nyc-taxi-fare-models
 
 Results:<br>
-We have been able to obtain an RMSE rate of about 3.5 till date.<br>
-We are still working on improving the performance of models through feature engineering 
-and parameter tuning.
+We have been able to obtain an RMSE rate of about 2.93 on the kaggle competition.<br>
 
 Kaggle Submissions(RMSE error rate on the test set):<br>
 <a href = "https://drive.google.com/file/d/1yECttTfHGwCP7I-x2DqwKL2goEplKj4r/view?usp=sharing">Link - 1(Xgboost)</a><br>
