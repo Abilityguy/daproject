@@ -32,13 +32,3 @@ y_test = model.predict(X_test)
 holdout = pd.DataFrame({'key': test_df.key, 'fare_amount': y_test})
 #write the submission file to output
 holdout.to_csv('submission.csv', index=False)
-
-
-model = linear_model.Ridge(normalize = True)
-gc.collect()
-model.fit(X,y)
-print("R2 value of model",model.score(X,y))
-y_test = model.predict(X_test)
-holdout = pd.DataFrame({'key': test_df.key, 'fare_amount': y_test})
-#write the submission file to output
-holdout.to_csv('submission_ridge.csv', index=False)
