@@ -35,7 +35,10 @@ A brief description of the files and folders:<br>
 ----ANN/ann.py - Script to train the Neural Network Model.<br>
 ----LGBM/lgbm.py - Script to train the LGBM Model.<br>
 ----XGBoost/XGBoost.py - Script to train the XGBoost Model.<br>
-
+----Lasso regression.py - Script to train the Lasso regression Model.<br>
+----LRRF.py - Script to train the Random forest Model.<br>
+----LR.py - Script to train the Linear regression Model.<br>
+----RidgreRegression.py - Script to train the XGBoost Model.<br>
 
 Results:<br>
 We have been able to obtain an RMSE rate of about 2.93 on the kaggle competition.<br>
