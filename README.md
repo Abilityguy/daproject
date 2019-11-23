@@ -22,6 +22,9 @@ https://www.kaggle.com/pradyu99914/nyc-taxi-fare-models
 LGBM:
 https://www.kaggle.com/anushkini/taxi-lightgbm
 
+Final Pipeline, with the links to all relevant kernels:
+https://www.kaggle.com/pradyu99914/
+
 A brief description of the files and folders:<br>
 -- TeamAPP_FinalReport.pdf - The final report of our project.<br>
 -- demo.py - A demo script which shows our recommender system in action.<br>
@@ -42,10 +45,6 @@ A brief description of the files and folders:<br>
 
 Results:<br>
 We have been able to obtain an RMSE rate of about 2.93 on the kaggle competition.<br>
-
-Kaggle Submissions(RMSE error rate on the test set):<br>
-<a href = "https://drive.google.com/file/d/1yECttTfHGwCP7I-x2DqwKL2goEplKj4r/view?usp=sharing">Link - 1(Xgboost)</a><br>
-<a href = "https://drive.google.com/file/d/1Z90VlckqNv_5gVYRxhFm5A1L9x89k3wz/view?usp=sharing">Link - 2(kNN, regression, random forest)(description for each submission provided)</a>
 
 All kaggle submissions made till date:
 <table class="tg">
